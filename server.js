@@ -38,7 +38,9 @@ wikiIo.on('connection', (socket) => {
     });
 
     // 誰かが接続したら、全員に「誰か来たよ！」と送る
-    wikiIo.emit('new_user_joined', '新しいユーザーが参加しました！'); 
+    //wikiIo.emit('new_user_joined', '新しいユーザーが参加しました！');
+    // 自分以外の全員に送る魔法の言葉（.broadcast を挟む）
+    socket.broadcast.emit('new_user_joined', '他の誰かが参加しました！'); 
 });
 
 // 4. Railwayのポート設定
