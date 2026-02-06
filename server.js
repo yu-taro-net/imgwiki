@@ -47,6 +47,26 @@ socket.on('button_clicked', (data) => {
     // 自分も含めた全員に送る
     wikiIo.emit('share_alert', data);
 });
+
+// 1. 接続中のユーザー情報を入れる箱を作る（ファイルの上のほうに）
+let activeUsers = {};
+
+wikiIo.on('connection', (socket) => {
+    // 2. 誰かが繋がったら、その人のIDを保存
+    activeUsers[socket.id] = {
+        id: socket.id.substring(0, 5), // IDを短くしたもの
+        page: '読み込み中...'
+    };
+
+    // 3. 全員に最新のリストを送りつける
+    wikiIo.emit('user_list_update', Object.values(activeUsers));
+
+    socket.on('disconnect', () => {
+        // 4. いなくなったらリストから消す
+        delete activeUsers[socket.id];
+        wikiIo.emit('user_list_update', Object.values(activeUsers));
+    });
+});
 });
 
 // 4. Railwayのポート設定
