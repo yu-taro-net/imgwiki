@@ -35,3 +35,8 @@ const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
     console.log(`サーバーがポート ${PORT} で起動しました`);
 });
+
+// サーバーが動いているか確認するための簡単なルート
+app.get('/test', (req, res) => {
+  res.send('imgwikiのサーバーは正常に動いています！');
+});
