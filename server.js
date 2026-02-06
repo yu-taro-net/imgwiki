@@ -2,9 +2,17 @@ const http = require('http');
 const { Server } = require('socket.io');
 
 // 1. サーバーの作成
+// 30行目あたりの「const server = ...」から始まるブロックを、以下のように書き換えます
+
 const server = http.createServer((req, res) => {
-    res.writeHead(200);
-    res.end('WebSocket Server is Running!');
+    // URLが「/test」だった場合
+    if (req.url === '/test') {
+        res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' });
+        res.end('imgwikiのサーバーは正常に動いています！');
+    } else {
+        res.writeHead(200);
+        res.end('WebSocket Server is Running!');
+    }
 });
 
 // 2. Socket.ioの初期化（CORS設定：PHPからの接続を許可）
@@ -34,9 +42,4 @@ wikiIo.on('connection', (socket) => {
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
     console.log(`サーバーがポート ${PORT} で起動しました`);
-});
-
-// サーバーが動いているか確認するための簡単なルート
-app.get('/test', (req, res) => {
-  res.send('imgwikiのサーバーは正常に動いています！');
 });
