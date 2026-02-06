@@ -36,6 +36,9 @@ wikiIo.on('connection', (socket) => {
         console.log('Wiki: ユーザーが離脱しました');
         wikiIo.emit('user_count', wikiIo.sockets.size);
     });
+
+    // 誰かが接続したら、全員に「誰か来たよ！」と送る
+    wikiIo.emit('new_user_joined', '新しいユーザーが参加しました！'); 
 });
 
 // 4. Railwayのポート設定
