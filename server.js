@@ -51,6 +51,16 @@ wikiIo.on('connection', (socket) => {
         wikiIo.emit('user_count', wikiIo.sockets.size);
         wikiIo.emit('user_list_update', Object.values(activeUsers));
     });
+
+    socket.on('page_info', (data) => {
+    if (activeUsers[socket.id]) {
+        // そのユーザーの「page」情報を書き換える
+        activeUsers[socket.id].page = data.title || data.url;
+        
+        // 全員に「更新されたリスト」を配る
+        wikiIo.emit('user_list_update', Object.values(activeUsers));
+    }
+});
 });
 
 const PORT = process.env.PORT || 3000;
