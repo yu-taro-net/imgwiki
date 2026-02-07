@@ -70,12 +70,9 @@ wikiIo.on('connection', (socket) => {
     // ページ遷移情報の受け取り
     socket.on('page_info', (data) => {
     if (activeUsers[socket.id]) {
-        // IDと名前の両方を保存する
-        activeUsers[socket.id].id = data.user_id || "guest_id";
-        activeUsers[socket.id].name = data.user_name || "ゲストさん";
+        activeUsers[socket.id].id = data.user_id || "guest";
+        activeUsers[socket.id].name = data.user_name || "ユーザ"; // ここ！
         activeUsers[socket.id].page = data.title || data.url;
-        
-        // 全員に「完全なリスト」を更新して送る
         wikiIo.emit('user_list_update', Object.values(activeUsers));
     }
 });
