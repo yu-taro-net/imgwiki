@@ -29,7 +29,8 @@ wikiIo.on('connection', (socket) => {
     // 1. ユーザー情報の初期登録
     activeUsers[socket.id] = {
         id: socket.id.substring(0, 5),
-        page: '読み込み中...'
+        page: '読み込み中...',
+		joinTime: Date.now() // ★入室した瞬間のタイムスタンプを記録
     };
 
     // 2. 「通知（アラート）」を送る：自分以外（broadcast）に1回だけ
