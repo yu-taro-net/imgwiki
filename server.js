@@ -37,7 +37,10 @@ wikiIo.on('connection', (socket) => {
     wikiIo.emit('user_list_update', Object.values(activeUsers));
 
     // 3. 他のユーザーに参加を知らせる
-    socket.broadcast.emit('new_user_joined', '他の誰かが参加しました！');
+    // 修正：単なる文字列ではなく、誰が入ったか分かるようにすると「いい感じ」です
+    socket.broadcast.emit('user_event', { 
+        msg: `新しいユーザー(${activeUsers[socket.id].id})が入室しました！` 
+    });
 
     // 4. ボタンクリックを受け取った時
     socket.on('button_clicked', (data) => {
@@ -46,6 +49,9 @@ wikiIo.on('connection', (socket) => {
 
     // 5. 切断した時
     socket.on('disconnect', () => {
+	    wikiIo.emit('user_event', { 
+           msg: `ユーザーが退室しました。現在の人数: ${wikiIo.sockets.size}名` 
+        });
         console.log('Wiki: ユーザーが離脱しました');
         delete activeUsers[socket.id]; // リストから削除
         wikiIo.emit('user_count', wikiIo.sockets.size);
