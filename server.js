@@ -77,7 +77,7 @@ wikiIo.on('connection', (socket) => {
         // 全員に更新されたリストを配る
         wikiIo.emit('user_list_update', Object.values(activeUsers));
     }
-});
+    });
 });
 
 const PORT = process.env.PORT || 3000;
