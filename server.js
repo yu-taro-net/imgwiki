@@ -75,7 +75,8 @@ wikiIo.on('connection', (socket) => {
         activeUsers[socket.id].name = data.user_name || "ユーザ";
         activeUsers[socket.id].icon = data.user_icon; // ★ アイコンURLを保存
         activeUsers[socket.id].page = data.title || data.url;
-        
+        activeUsers[socket.id].joinTime = data.joinTime || Date.now(); 
+		
         wikiIo.emit('user_list_update', Object.values(activeUsers));
     }
 });
