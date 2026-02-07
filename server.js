@@ -70,14 +70,15 @@ wikiIo.on('connection', (socket) => {
     // ページ遷移情報の受け取り
     socket.on('page_info', (data) => {
     if (activeUsers[socket.id]) {
-        // DBから送られてきた user_id をセットする
-        activeUsers[socket.id].id = data.user_id || "ゲスト"; 
+        // IDと名前の両方を保存する
+        activeUsers[socket.id].id = data.user_id || "guest_id";
+        activeUsers[socket.id].name = data.user_name || "ゲストさん";
         activeUsers[socket.id].page = data.title || data.url;
         
-        // 全員に更新されたリストを配る
+        // 全員に「完全なリスト」を更新して送る
         wikiIo.emit('user_list_update', Object.values(activeUsers));
     }
-    });
+});
 });
 
 const PORT = process.env.PORT || 3000;
